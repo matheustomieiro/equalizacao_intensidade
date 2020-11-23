@@ -33,7 +33,8 @@ module main();
                 for (j=0;j<cols[11:0];j=j+1) begin
                     pos = $ftell(filed);
                     aux = $fscanf(filed, "%d", num);
-                    num = num + 20;
+                    num = 1.2*num + 25;
+                    //num = ($clog2(num))*$clog2(num)*3.14;
                     if (num > 255)
                         num = 255;
                     // pos = $ftell(filed);
