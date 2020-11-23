@@ -4,43 +4,40 @@
 
 module main();
 
-  // //wire [7:0]XPower;
   // wire finished;
-  // reg [7:0]X;
   // reg clk;
   // reg start;
   
-  // // Instantiate design under test
-  // XPowerIterative inst_1(.clk(clk), .start(start), .X(X), .XPower(XPower), .finished(finished));
-          
-  integer filed, pos, aux, i,j, lines, cols;
+  integer filed,file2, pos, aux, i,j, lines, cols;
   integer test;
   reg [31:0]num;
   reg [7:0]num2;
   reg [3:0]um;
 
   initial begin
-        filed = $fopen("File.pgm","r+");
-        //um = 8'b00000001;
-        cols = 130;
-        lines = 130;
-        if (!filed)
+        filed = $fopen("File.pgm","r");
+        file2 = $fopen("File_Filter.pgm", "r+");
+        if (!filed)  
             $display("Nao foi possivel abrir o arquivo.");
         else begin
-            aux = $fseek(filed, 14, `SEEK_SET);
-            $fwrite(filed, "\n");
-            for (i=0;i<lines;i=i+1) begin
-                for (j=0;j<cols;j=j+1) begin
+            aux = $fseek(filed, 0, `SEEK_SET);
+            aux = $fscanf(filed, "%s", num);
+            $fwrite(file2, "%0s\n", num);
+            aux = $fscanf(filed, "%d", lines[11:0]);
+            $fwrite(file2, "%0d ", lines[11:0]);
+            aux = $fscanf(filed, "%d", cols[11:0]);
+            $fwrite(file2, "%0d\n", cols[11:0]);
+            aux = $fscanf(filed, "%d", num);
+            $fwrite(file2, "%0d\n", num);
+            for (i=0;i<lines[11:0];i=i+1) begin
+                for (j=0;j<cols[11:0];j=j+1) begin
                     pos = $ftell(filed);
-                    aux = $fscanf(filed, "%h", num);
-                    //num2[7:0] = num[7:0];
-                   // num = (num + 20);
-                    if (num2 > 255)
-                        num2 = 255;
-                    test = num[7:0];
-                    aux = $fseek(filed, pos, `SEEK_SET);
+                    aux = $fscanf(filed, "%d", num);
+                    num = num + 20;
+                    if (num > 255)
+                        num = 255;
                     // pos = $ftell(filed);
-                    $fwrite(filed, "%0d ", test);
+                    $fwrite(file2, "%0d ", num);
                     // aux = $fseek(filed, pos+2, `SEEK_SET);
                 end
                 //aux = $fseek(filed, pos, `SEEK_SET);

@@ -5,7 +5,7 @@ all:
 	iverilog	$(DESIGN)	$(MAIN)
 	@mv	a.out	main.out
 
-run: removeimg restore all
+run:
 	vvp main.out
 
 clean:
